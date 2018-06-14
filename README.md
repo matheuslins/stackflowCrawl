@@ -1,2 +1,2 @@
 # crawlpy
-The robo crawlers repository
+The robot crawlers repository
