@@ -102,3 +102,7 @@ venv.bak/
 
 # mypy
 .mypy_cache/
+
+# database
+
+crawlpy/firebase_secrets.json
