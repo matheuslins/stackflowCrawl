@@ -1,19 +1,13 @@
 # -*- coding: utf-8 -*-
 
-# Scrapy settings for crawlpy project
-#
-# For simplicity, this file contains only settings considered important or
-# commonly used. You can find more settings consulting the documentation:
-#
-#     https://doc.scrapy.org/en/latest/topics/settings.html
-#     https://doc.scrapy.org/en/latest/topics/downloader-middleware.html
-#     https://doc.scrapy.org/en/latest/topics/spider-middleware.html
+import os
 
 BOT_NAME = 'crawlpy'
 
 SPIDER_MODULES = [
     'crawlpy.spiders.stackoverflow'
 ]
+
 NEWSPIDER_MODULE = 'crawlpy.spiders'
 
 
@@ -24,7 +18,7 @@ NEWSPIDER_MODULE = 'crawlpy.spiders'
 ROBOTSTXT_OBEY = True
 
 # Configure maximum concurrent requests performed by Scrapy (default: 16)
-CONCURRENT_REQUESTS = 32
+CONCURRENT_REQUESTS = 16
 
 # Configure a delay for requests for the same website (default: 0)
 # See https://doc.scrapy.org/en/latest/topics/settings.html#download-delay
@@ -67,7 +61,7 @@ DOWNLOADER_MIDDLEWARES = {
 # Configure item pipelines
 # See https://doc.scrapy.org/en/latest/topics/item-pipeline.html
 ITEM_PIPELINES = {
-   'crawlpy.pipelines.CrawlpyPipeline': 300,
+    'crawlpy.pipelines.FirebasePipeline': 300,
 }
 
 # Enable and configure the AutoThrottle extension (disabled by default)
@@ -90,3 +84,8 @@ ITEM_PIPELINES = {
 #HTTPCACHE_DIR = 'httpcache'
 #HTTPCACHE_IGNORE_HTTP_CODES = []
 #HTTPCACHE_STORAGE = 'scrapy.extensions.httpcache.FilesystemCacheStorage'
+
+
+# FireBase
+FIREBASE_DATABASE = 'https://linkehub-api.firebaseio.com/'
+FIREBASE_REF = 'stackoverflow_jobs'
