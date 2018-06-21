@@ -2,6 +2,10 @@
 
 import os
 
+from decouple import config
+
+DEBUG = config('DEBUG', cast=bool, default=False)
+
 BOT_NAME = 'crawlpy'
 
 SPIDER_MODULES = [
@@ -60,9 +64,13 @@ DOWNLOADER_MIDDLEWARES = {
 
 # Configure item pipelines
 # See https://doc.scrapy.org/en/latest/topics/item-pipeline.html
-ITEM_PIPELINES = {
-    'crawlpy.pipelines.FirebasePipeline': 300,
-}
+ITEM_PIPELINES = {}
+
+if DEBUG:
+    ITEM_PIPELINES['crawlpy.pipelines.MongoDBPipeline'] = 300
+else:
+    ITEM_PIPELINES['crawlpy.pipelines.FirebasePipeline'] = 300
+
 
 # Enable and configure the AutoThrottle extension (disabled by default)
 # See https://doc.scrapy.org/en/latest/topics/autothrottle.html
@@ -89,3 +97,8 @@ ITEM_PIPELINES = {
 # FireBase
 FIREBASE_DATABASE = 'https://linkehub-api.firebaseio.com/'
 FIREBASE_REF = 'stackoverflow_jobs'
+
+# MoingoDB
+MONGODB_SERVER = "localhost"
+MONGODB_PORT = 27017
+MONGO_DATABASE = "jobs"
