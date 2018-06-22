@@ -17,7 +17,7 @@ class JobItem(scrapy.Item):
     company = scrapy.Field()
     location = scrapy.Field()
     sponsor = scrapy.Field()
-    salary_year = scrapy.Field()
+    salary = scrapy.Field()
     paid = scrapy.Field()
 
     # About the job
