@@ -12,10 +12,9 @@ class StackOverflowSpider(Spider):
     name = 'stackoverflow'
     city = None
     distance = None
-    initial_step = consult_job
     allowed_domains = ['stackoverflow.com']
     custom_settings = {
-        'CONCURRENT_REQUESTS': 5
+        'DOWNLOAD_DELAY': 1
     }
 
     def __init__(self, city=None, distance=None, *a, **kw):
@@ -47,6 +46,5 @@ class StackOverflowSpider(Spider):
         return furl(START_URL).add(params).url
 
     def parse(self, response):
-        initial_step = self.initial_step(response)
-        for item in initial_step or []:
+        for item in consult_job(response) or []:
             yield item

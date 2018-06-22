@@ -12,7 +12,7 @@ def extract_job(response):
     loader.add_value('job_id', extract_job_id(response.url))
     loader.add_value('job_url', response.url)
     item = loader.load_item()
-    return item
+    yield item
 
 
 def extract_company(spider, response):
