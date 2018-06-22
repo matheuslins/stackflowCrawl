@@ -42,3 +42,11 @@ class DefaultOutputProcessor(object):
                 return values[0]
         except:
             return values
+
+
+class TakeLast(object):
+
+    def __call__(self, values):
+        for value in reversed(values):
+            if value is not None and value != '':
+                return value
