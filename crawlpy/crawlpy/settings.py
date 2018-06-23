@@ -4,7 +4,7 @@ import os
 
 from decouple import config
 
-DEBUG = config('DEBUG', cast=bool, default=False)
+DEBUG = config('DEBUG', cast=bool, default=True)
 
 BOT_NAME = 'crawlpy'
 

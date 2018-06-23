@@ -17,17 +17,11 @@ def consult_job(response):
 
     has_pagination = response.xpath(XPAHS_CONSULT['pagination'])
     if has_pagination:
-        yield pagination(response)
+        yield pagination(response, has_pagination)
 
 
-def pagination(response):
-    if '?pg=' not in response.url:
-        # first page
-        url_pagination = furl(response.url).add('pg=2').url
-    else:
-        splited_url = response.url.split('?pg=')
-        url_pagination = furl(
-            splited_url[0]).add(
-                'pg={}'.format(str(int(splited_url[1]) + 1))).url
-
+def pagination(response, h_pag):
+    url_pag = h_pag.xpath('./@href')[0].extract()
+    url_parse = furl(response.url)
+    url_pagination = url_parse.origin + url_pag
     return Request(url_pagination, callback=consult_job)

@@ -14,7 +14,7 @@ class StackOverflowSpider(Spider):
     distance = None
     allowed_domains = ['stackoverflow.com']
     custom_settings = {
-        'DOWNLOAD_DELAY': 1
+        'DOWNLOAD_DELAY': 0.8
     }
 
     def __init__(self, city=None, distance=None, *a, **kw):
@@ -36,7 +36,6 @@ class StackOverflowSpider(Spider):
 
     def get_initial_url(self):
         params = {
-            'sort': 'i',
             'u': 'Km',
             'd': self.get_distance(),
             'l': self.get_city()
