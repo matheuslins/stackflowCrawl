@@ -9,7 +9,8 @@ DEBUG = config('DEBUG', cast=bool, default=True)
 BOT_NAME = 'crawlpy'
 
 SPIDER_MODULES = [
-    'crawlpy.spiders.stackoverflow'
+    'crawlpy.spiders.stackoverflow',
+    'crawlpy.spiders.linkedin'
 ]
 
 NEWSPIDER_MODULE = 'crawlpy.spiders'
@@ -19,7 +20,7 @@ NEWSPIDER_MODULE = 'crawlpy.spiders'
 #USER_AGENT = 'crawlpy (+http://www.yourdomain.com)'
 
 # Obey robots.txt rules
-ROBOTSTXT_OBEY = True
+ROBOTSTXT_OBEY = False
 
 # Configure maximum concurrent requests performed by Scrapy (default: 16)
 CONCURRENT_REQUESTS = 16
@@ -47,7 +48,7 @@ CONCURRENT_REQUESTS_PER_IP = 16
 # Enable or disable spider middlewares
 # See https://doc.scrapy.org/en/latest/topics/spider-middleware.html
 SPIDER_MIDDLEWARES = {
-   'crawlpy.middlewares.CrawlpySpiderMiddleware': 543,
+#    'crawlpy.middlewares.CrawlpySpiderMiddleware': 543,
 }
 
 # Enable or disable downloader middlewares
@@ -55,7 +56,7 @@ SPIDER_MIDDLEWARES = {
 
 DOWNLOADER_MIDDLEWARES = {
     'scrapy.downloadermiddlewares.retry.RetryMiddleware': None,
-    'crawlpy.middlewares.TooManyRequestsRetryMiddleware': 543,
+    # 'crawlpy.middlewares.TooManyRequestsRetryMiddleware': 543,
 }
 # Enable or disable extensions
 # See https://doc.scrapy.org/en/latest/topics/extensions.html

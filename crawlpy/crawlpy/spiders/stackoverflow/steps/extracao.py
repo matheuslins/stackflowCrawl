@@ -2,7 +2,7 @@
 
 from crawlpy.loaders import JobLoader
 
-from ..utils import extract_job_id
+from crawlpy.tools.text import extract_job_id
 from ..constants.extracao import XPATHS_JOB
 
 
