@@ -64,10 +64,11 @@ DOWNLOADER_MIDDLEWARES = {
 #    'scrapy.extensions.telnet.TelnetConsole': None,
 #}
 
-# Configure item pipelines
-# See https://doc.scrapy.org/en/latest/topics/item-pipeline.html
+
 ITEM_PIPELINES = {
-    'crawlpy.pipelines.DuplicatesJobPipeline': 200
+    'crawlpy.pipelines.BaseDBPipeline': 100,
+    'crawlpy.pipelines.DuplicatesJobPipeline': 200,
+    'crawlpy.pipelines.APIPipeline': 350
 }
 
 if DEBUG:

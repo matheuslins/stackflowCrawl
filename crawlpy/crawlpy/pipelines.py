@@ -1,21 +1,23 @@
 # -*- coding: utf-8 -*-
+
+import firebase_admin
 import logging
 import pymongo
 
-from os import path, getcwd
 from base64 import b64decode
-
+from decouple import config
+from os import path, getcwd
 from scrapy.exporters import BaseItemExporter
-from scrapy.exceptions import DropItem
+from scrapy.exceptions import DropItem, NotConfigured
 from scrapy import signals
-
-import firebase_admin
 from firebase_admin import credentials
 from firebase_admin import db
 
+from crawlpy.processors import HandleAPI
+
 
 class DuplicatesJobPipeline(object):
-
+    
     def __init__(self):
         self.jobs = set()
 
@@ -40,7 +42,7 @@ class DuplicatesJobPipeline(object):
 
 
 class FirebasePipeline(BaseItemExporter):
-
+    
     def load_spider(self, spider):
         self.crawler = spider.crawler
         self.settings = spider.settings
@@ -68,20 +70,18 @@ class FirebasePipeline(BaseItemExporter):
         pass
 
 
-class MongoDBPipeline(object):
+class BaseDBPipeline(object):
 
-    collection_name = 'crawlpy_jobs'
+    collection_name = config(
+        'COLLECTION_NAME', cast=str, default='jobs_crawled')
 
-    def __init__(self, mongo_uri, mongo_db):
-        self.mongo_uri = mongo_uri
-        self.mongo_db = mongo_db
+    def __init__(self, settings):
+        self.mongo_uri = settings.get('MONGODB_SERVER')
+        self.mongo_db = settings.get('MONGO_DATABASE', 'items')
 
     @classmethod
     def from_crawler(cls, crawler):
-        return cls(
-            mongo_uri=crawler.settings.get('MONGODB_SERVER'),
-            mongo_db=crawler.settings.get('MONGO_DATABASE', 'items')
-        )
+        return cls(crawler.settings)
 
     def open_spider(self, spider):
         self.client = pymongo.MongoClient(self.mongo_uri)
@@ -90,10 +90,29 @@ class MongoDBPipeline(object):
     def close_spider(self, spider):
         self.client.close()
 
+
+class MongoDBPipeline(BaseDBPipeline):
+    
+    def __init__(self, settings, *args, **kwargs):
+        super(MongoDBPipeline, self).__init__(settings, *args, **kwargs)
+
     def process_item(self, item, spider):
         self.db[self.collection_name].insert_one(dict(item))
         return item
 
+
+class APIPipeline(BaseDBPipeline):
+    
+    def __init__(self, settings, *args, **kwargs):
+        if not settings.getbool('API_PIPILINE_ENABLE'):
+            raise NotConfigured
+        super(APIPipeline, self).__init__(settings, *args, **kwargs)
+
+    def close_spider(self, spider):
+        cursor = self.db[self.collection_name].find({})
+        api = HandleAPI(cursor)
+        api.send()
+        self.client.close()
 
 # class MongoBulkInsert(object):
 
