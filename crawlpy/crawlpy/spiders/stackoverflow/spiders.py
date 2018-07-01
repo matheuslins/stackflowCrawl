@@ -1,25 +1,31 @@
 # -*- coding: utf-8 -*-
 import re
+import os
 
 from furl import furl
+from decouple import config
 from scrapy.spiders import Spider
 
+from crawlpy.tools.wrappers import property_collection
 from .constants.consulta import START_URL
 from .steps.consulta import consult_job
 
 
 class StackOverflowSpider(Spider):
-    name = 'stackoverflow'
+    name = 'stkflow'
     city = None
     distance = None
+    job = None
     allowed_domains = ['stackoverflow.com']
     custom_settings = {
-        'DOWNLOAD_DELAY': 0.8
+        'DOWNLOAD_DELAY': 0.8,
+        'API_PIPILINE_ENABLE': True
     }
 
-    def __init__(self, city=None, distance=None, *a, **kw):
+    def __init__(self, city=None, distance=None, job=None, *a, **kw):
         self.city = city
         self.distance = distance
+        self.job = job
 
         if distance and (city is None):
             raise ValueError(
@@ -30,15 +36,21 @@ class StackOverflowSpider(Spider):
 
     def get_distance(self):
         return '20' if self.distance is None else self.distance
+    
+    @property_collection
+    def get_job(self):
+        return self.job
 
+    @property_collection
     def get_city(self):
-        return '' if self.city is None else self.city
+        return self.city
 
     def get_initial_url(self):
         params = {
             'u': 'Km',
             'd': self.get_distance(),
-            'l': self.get_city()
+            'l': self.get_city(),
+            'q': self.get_job()
         }
         if not self.get_city():
             return START_URL
