@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import re
 
 from scrapy.http import Request
 from urllib.parse import urljoin
@@ -10,15 +11,21 @@ from ..constants.consulta import XPAHS_CONSULT
 
 
 def consult_job(response):
-    jobs_urls = response.xpath(XPAHS_CONSULT['jobs_urls'])
-    for job_url in jobs_urls:
-        final_url = clean_url(urljoin(response.url, job_url.extract()))
-        yield Request(final_url, callback=extract_job)
+    results = re.findall(
+        r'(\d+)', response.xpath(XPAHS_CONSULT['results']).extract_first())
 
-    has_pagination = response.xpath(XPAHS_CONSULT['pagination'])
-    if has_pagination:
-        yield pagination(response, has_pagination)
+    if results:
+        if int(results[0]) != 0:
+            jobs_urls = response.xpath(XPAHS_CONSULT['jobs_urls'])
+            for job_url in jobs_urls:
+                final_url = clean_url(urljoin(response.url, job_url.extract()))
+                yield Request(final_url, callback=extract_job)
 
+            has_pagination = response.xpath(XPAHS_CONSULT['pagination'])
+            if has_pagination:
+                yield pagination(response, has_pagination)
+        else:
+            print("A busca nao encontrou resultados")
 
 def pagination(response, h_pag):
     url_pag = h_pag.xpath('./@href')[0].extract()
