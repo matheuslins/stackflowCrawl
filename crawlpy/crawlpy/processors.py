@@ -1,13 +1,15 @@
 # -*- coding: utf-8 -*-
+import json
 
 from six import string_types
-
 from crawlpy import parsers
 from w3lib.html import remove_tags
 
+from .tools.api import send_to_api
+
 
 class DefaultInputProcessor(object):
-
+    
     def __call__(self, values):
         try:
             new_values = []
@@ -21,6 +23,7 @@ class DefaultInputProcessor(object):
 
     def _clear_value(self, value):
         if isinstance(value, string_types):
+            unicode = lambda s: str(s)
             try:
                 cleared_value = unicode(remove_tags(value))
                 return parsers.normalize_spaces(cleared_value)
@@ -45,8 +48,28 @@ class DefaultOutputProcessor(object):
 
 
 class TakeLast(object):
-
+    
     def __call__(self, values):
         for value in reversed(values):
             if value is not None and value != '':
                 return value
+
+
+class HandleAPI(object):
+
+    def __init__(self, cursor):
+        self.items = self.config(cursor)
+        self.new_items = self.treat_items(self.items)
+    
+    def treat_items(self, items):
+        new_items = []
+        for item in items:
+            del item['_id']
+            new_items.append(item)
+        return new_items
+    
+    def send(self):
+        send_to_api(self.new_items, '/process-data/', 'post')
+
+    def config(self, cursor):
+        return [item for item in cursor]
