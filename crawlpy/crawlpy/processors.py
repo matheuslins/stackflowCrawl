@@ -69,7 +69,7 @@ class HandleAPI(object):
         return new_items
     
     def send(self):
-        send_to_api(self.new_items, '/process-data/', 'post')
+        send_to_api(self.new_items, '/job/create/', 'post')
 
     def config(self, cursor):
         return [item for item in cursor]
