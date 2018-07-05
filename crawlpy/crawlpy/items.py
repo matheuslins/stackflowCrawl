@@ -11,9 +11,9 @@ from scrapy.loader.processors import Identity
 
 class JobItem(scrapy.Item):
     # General infos
-    job_url = scrapy.Field()
+    url = scrapy.Field()
     job_id = scrapy.Field()
-    job_title = scrapy.Field()
+    title = scrapy.Field()
     company = scrapy.Field()
     location = scrapy.Field()
     sponsor = scrapy.Field()
@@ -21,13 +21,13 @@ class JobItem(scrapy.Item):
     paid = scrapy.Field()
 
     # About the job
-    job_type = scrapy.Field()
+    _type = scrapy.Field()
     industry = scrapy.Field()
     experience_level = scrapy.Field()
     role = scrapy.Field()
     company_size = scrapy.Field()
     company_type = scrapy.Field()
-    job_description = scrapy.Field()
+    description = scrapy.Field()
     link_apply = scrapy.Field()
     joel_test = scrapy.Field(output_processor=Identity())  # list
 

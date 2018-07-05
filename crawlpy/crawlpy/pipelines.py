@@ -4,6 +4,7 @@ import firebase_admin
 import logging
 import pymongo
 
+from pymongo import InsertOne
 from base64 import b64decode
 from decouple import config
 from os import path, getcwd
@@ -71,11 +72,13 @@ class FirebasePipeline(BaseItemExporter):
 
 
 class BaseDBPipeline(object):
+    bulk_size = 100
 
     collection_name = config(
         'COLLECTION_NAME', cast=str, default='jobs_crawled')
 
     def __init__(self, settings):
+        self.bulk = []
         self.mongo_uri = settings.get('MONGODB_SERVER')
         self.mongo_db = settings.get('MONGO_DATABASE', 'items')
 
@@ -87,90 +90,36 @@ class BaseDBPipeline(object):
         self.client = pymongo.MongoClient(self.mongo_uri)
         self.db = self.client[self.mongo_db]
 
-    def close_spider(self, spider):
-        self.client.close()
-
 
 class MongoDBPipeline(BaseDBPipeline):
     
     def __init__(self, settings, *args, **kwargs):
+        if not settings.getbool('MONGODB_PIPELINE_ENABLE'):
+            raise NotConfigured
         super(MongoDBPipeline, self).__init__(settings, *args, **kwargs)
 
-    def process_item(self, item, spider):
-        self.db[self.collection_name].insert_one(dict(item))
-        return item
-
-
-class APIPipeline(BaseDBPipeline):
-    
-    def __init__(self, settings, *args, **kwargs):
-        if not settings.getbool('API_PIPILINE_ENABLE'):
-            raise NotConfigured
-        super(APIPipeline, self).__init__(settings, *args, **kwargs)
-
-    def close_spider(self, spider):
-        cursor = self.db[self.collection_name].find({})
-        api = HandleAPI(cursor)
+    def call_api(self):
+        api = HandleAPI(self.bulk)
         api.send()
+
+    def process_bulk_item(self, items):
+        operations = [InsertOne(dict(item)) for item in items]
+        try:
+            self.db[self.collection_name].bulk_write(operations)
+        except pymongo.errors.BulkWriteError as bwe:
+            raise bwe
+
+    def process_item(self, item, spider):
+        self.bulk.append(dict(item))
+        if len(self.bulk) >= self.bulk_size:
+            self.process_bulk_item(self.bulk)
+            self.call_api()
+            self.bulk = []
+        return item
+    
+    def close_spider(self, spider):
+        if len(self.bulk) < self.bulk_size:
+            for item in self.bulk:
+                self.db[self.collection_name].insert_one(dict(item))
+            self.call_api()
         self.client.close()
-
-# class MongoBulkInsert(object):
-
-#     logger = logging.getLogger(__name__)
-#     collection_name = 'crawlpy_jobs'
-#     bulk_size = 100
-
-#     def __init__(self, crawler):
-#         self.mongo_uri = crawler.settings.get('MONGODB_SERVER')
-#         self.mongo_db = crawler.settings.get('MONGO_DATABASE', 'items')
-#         self.crawler = crawler
-#         self.bulk = []
-
-#     @classmethod
-#     def from_crawler(cls, crawler):
-#         pipeline = cls(crawler)
-#         crawler.signals.connect(
-#             pipeline.spider_closed,
-#             signal=signals.spider_closed)
-#         return pipeline
-
-#     def open_spider(self, spider):
-#         import ipdb; ipdb.set_trace()
-#         self.client = pymongo.MongoClient(self.mongo_uri)
-#         self.db = self.client[self.mongo_db]
-
-#     def process_bulk_item(self, items):
-#         operations = []
-#         for item in items:
-#             data = dict(item)
-#             operations.append(self.make_write_recipe(data))
-#         try:
-#             database_collection = getattr(self, 'collection_name')
-#             self.check_index(self.db, database_collection)
-#             self.db[database_collection].bulk_write(operations)
-#         except pymongo.errors.BulkWriteError as bwe:
-#             raise bwe
-
-#     def make_write_recipe(self, item):
-#         import ipdb; ipdb.set_trace()
-#         return pymongo.UpdateOne(item['id'], {'$set': item}, upsert=True)
-
-#     def item_pipeline(self, item, spider):
-#         import ipdb; ipdb.set_trace()
-#         item = super(MongoBulkInsert, self).item_pipeline(item, spider)
-#         spider.logger.info('Scraped one item.')
-#         self.bulk.append(item)
-#         if len(self.bulk) >= self.bulk_size:
-#             spider.logger.info('Sending items to database.')
-#             self.process_bulk_item(self.bulk)
-#             self.bulk = []
-#         return item
-
-#     def spider_closed(self, spider, *args, **kwargs):
-#         import ipdb; ipdb.set_trace()
-#         if self.bulk:
-#             self.logger.info('Sending items to database.')
-#             if not hasattr(self, 'database_collection'):
-#                 self.collection_name = spider.collection_name
-#             self.process_bulk_item(self.bulk)
-#             self.bulk = []
