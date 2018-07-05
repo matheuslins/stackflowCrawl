@@ -30,8 +30,8 @@ def _clean_skills(skills):
 XPATHS_JOB = {
 
     # Jobs infos
-    'job_title': '//h1[contains(@class, "headline1")]//a/text()',
-    'job_type': _base_xpath_job('Job type'),
+    'title': '//h1[contains(@class, "headline1")]//a/text()',
+    '_type': _base_xpath_job('Job type'),
     'experience_level': _base_xpath_job('Experience level'),
     'role': _base_xpath_job('Role'),
     'industry': _base_xpath_job('Industry'),
@@ -40,7 +40,7 @@ XPATHS_JOB = {
     'tecnologies': ('//section[contains(., "Technologies")]//div//a/text()',
                     _clean_skills),
 
-    'job_description': (
+    'description': (
         '//section[contains(., "Job description")]//p//text() | '
         '//section[contains(., "Job description")]//p//text()', Join()),
     'joel_test': ('//section[contains(., "Joel Test")]'

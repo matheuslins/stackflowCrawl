@@ -59,17 +59,9 @@ class HandleAPI(object):
 
     def __init__(self, cursor):
         self.items = self.config(cursor)
-        self.new_items = self.treat_items(self.items)
-    
-    def treat_items(self, items):
-        new_items = []
-        for item in items:
-            del item['_id']
-            new_items.append(item)
-        return new_items
     
     def send(self):
-        send_to_api(self.new_items, '/job/create/', 'post')
+        send_to_api(self.items, '/job/create/', 'post')
 
     def config(self, cursor):
         return [item for item in cursor]

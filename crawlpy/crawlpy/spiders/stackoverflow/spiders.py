@@ -19,7 +19,7 @@ class StackOverflowSpider(Spider):
     allowed_domains = ['stackoverflow.com']
     custom_settings = {
         'DOWNLOAD_DELAY': 0.8,
-        'API_PIPILINE_ENABLE': True
+        'MONGODB_PIPELINE_ENABLE': True
     }
 
     def __init__(self, city=None, distance=None, job=None, *a, **kw):

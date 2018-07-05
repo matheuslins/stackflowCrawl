@@ -67,8 +67,7 @@ DOWNLOADER_MIDDLEWARES = {
 
 ITEM_PIPELINES = {
     'crawlpy.pipelines.BaseDBPipeline': 100,
-    'crawlpy.pipelines.DuplicatesJobPipeline': 200,
-    'crawlpy.pipelines.APIPipeline': 350
+    'crawlpy.pipelines.DuplicatesJobPipeline': 200
 }
 
 if DEBUG:
