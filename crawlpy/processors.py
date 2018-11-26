@@ -1,6 +1,3 @@
-# -*- coding: utf-8 -*-
-import json
-
 from six import string_types
 from crawlpy import parsers
 from w3lib.html import remove_tags
@@ -59,7 +56,7 @@ class HandleAPI(object):
 
     def __init__(self, cursor):
         self.items = self.config(cursor)
-    
+
     def send(self):
         send_to_api(self.items, '/job/create/', 'post')
 

@@ -1,10 +1,5 @@
-# -*- coding: utf-8 -*-
-import re
-import os
-
 from furl import furl
-from decouple import config
-from scrapy.spiders import Spider
+from scrapy import Spider
 
 from crawlpy.tools.wrappers import property_collection
 from .constants.consulta import START_URL

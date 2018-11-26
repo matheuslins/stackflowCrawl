@@ -102,7 +102,7 @@ else:
 FIREBASE_DATABASE = 'https://linkehub-api.firebaseio.com/'
 FIREBASE_REF = 'stackoverflow_jobs'
 
-# MoingoDB
+# MongoDB
 MONGODB_SERVER = "localhost"
 MONGODB_PORT = 27017
 MONGO_DATABASE = "jobs"

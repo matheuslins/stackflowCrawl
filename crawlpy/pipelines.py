@@ -1,16 +1,11 @@
-# -*- coding: utf-8 -*-
-
 import firebase_admin
-import logging
 import pymongo
 
 from pymongo import InsertOne
-from base64 import b64decode
 from decouple import config
 from os import path, getcwd
 from scrapy.exporters import BaseItemExporter
 from scrapy.exceptions import DropItem, NotConfigured
-from scrapy import signals
 from firebase_admin import credentials
 from firebase_admin import db
 
@@ -23,6 +18,7 @@ class DuplicatesJobPipeline(object):
         self.jobs = set()
 
     def item_pipeline(self, item, spider):
+        import ipdb; ipdb.set_trace()
         id_job = item.get('id')
 
         if not id_job:
@@ -59,7 +55,7 @@ class FirebasePipeline(BaseItemExporter):
         firebase_admin.initialize_app(**configuration)
         self.ref = db.reference(self.settings['FIREBASE_REF'])
 
-    def process_item(self, item, spider):
+    def process_item(self, item):
         item = dict(self._get_serialized_fields(item))
         initial_path = item.pop('job_id')
 
@@ -117,7 +113,7 @@ class MongoDBPipeline(BaseDBPipeline):
             self.bulk = []
         return item
     
-    def close_spider(self, spider):
+    def close_spider(self):
         if len(self.bulk) < self.bulk_size:
             for item in self.bulk:
                 self.db[self.collection_name].insert_one(dict(item))
