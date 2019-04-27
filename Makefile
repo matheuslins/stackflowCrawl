@@ -37,8 +37,8 @@ pep8:
 spider:
 	@echo "Criando spider:" $(NAME) "....."
 	@echo "Criando diretorio principal"
-	@mkdir ./crawlpy/crawlpy/spiders/$(NAME)
-	@cd ./crawlpy/crawlpy/spiders/$(NAME) &&\
+	@mkdir ./stackflowCrawl/stackflowCrawl/spiders/$(NAME)
+	@cd ./stackflowCrawl/stackflowCrawl/spiders/$(NAME) &&\
 	mkdir ./constants &&\
 	mkdir ./steps &&\
 	echo "# spider-arguments.yml\n---" > spider-arguments.yml &&\
@@ -57,8 +57,8 @@ spider:
 	echo "# -*- coding: utf-8 -*-\n" > ./steps/extracao.py
 	@echo "Spider criada!"
 
-deps:
-	pip install -r requirements.txt
+install:
+	pipenv install
 
-free:
-	pip freeze > requirements.txt
+lock:
+	pipenv lock

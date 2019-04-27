@@ -2,8 +2,8 @@
 
 from scrapy.loader import ItemLoader
 from scrapy.loader.processors import Identity, Join
-from crawlpy import processors
-from crawlpy.items import JobItem
+from stackflowCrawl import processors
+from stackflowCrawl.items import JobItem
 
 
 class BaseLoader(ItemLoader):

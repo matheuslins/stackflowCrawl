@@ -1,23 +1,20 @@
 # -*- coding: utf-8 -*-
 
-import os
-
 from decouple import config
 
 DEBUG = config('DEBUG', cast=bool, default=True)
 
-BOT_NAME = 'crawlpy'
+BOT_NAME = 'stackflowCrawl'
 
 SPIDER_MODULES = [
-    'crawlpy.spiders.stackoverflow',
-    'crawlpy.spiders.linkedin'
+    'stackflowCrawl.spiders.stackoverflow'
 ]
 
-NEWSPIDER_MODULE = 'crawlpy.spiders'
+NEWSPIDER_MODULE = 'stackflowCrawl.spiders'
 
 
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
-#USER_AGENT = 'crawlpy (+http://www.yourdomain.com)'
+#USER_AGENT = 'stackflowCrawl (+http://www.yourdomain.com)'
 
 # Obey robots.txt rules
 ROBOTSTXT_OBEY = False
@@ -48,7 +45,7 @@ CONCURRENT_REQUESTS_PER_IP = 16
 # Enable or disable spider middlewares
 # See https://doc.scrapy.org/en/latest/topics/spider-middleware.html
 SPIDER_MIDDLEWARES = {
-#    'crawlpy.middlewares.CrawlpySpiderMiddleware': 543,
+#    'stackflowCrawl.middlewares.CrawlpySpiderMiddleware': 543,
 }
 
 # Enable or disable downloader middlewares
@@ -56,7 +53,7 @@ SPIDER_MIDDLEWARES = {
 
 DOWNLOADER_MIDDLEWARES = {
     'scrapy.downloadermiddlewares.retry.RetryMiddleware': None,
-    # 'crawlpy.middlewares.TooManyRequestsRetryMiddleware': 543,
+    # 'stackflowCrawl.middlewares.TooManyRequestsRetryMiddleware': 543,
 }
 # Enable or disable extensions
 # See https://doc.scrapy.org/en/latest/topics/extensions.html
@@ -66,14 +63,14 @@ DOWNLOADER_MIDDLEWARES = {
 
 
 ITEM_PIPELINES = {
-    'crawlpy.pipelines.BaseDBPipeline': 100,
-    'crawlpy.pipelines.DuplicatesJobPipeline': 200
+    'stackflowCrawl.pipelines.BaseDBPipeline': 100,
+    'stackflowCrawl.pipelines.DuplicatesJobPipeline': 200
 }
 
 if DEBUG:
-    ITEM_PIPELINES['crawlpy.pipelines.MongoDBPipeline'] = 300
+    ITEM_PIPELINES['stackflowCrawl.pipelines.MongoDBPipeline'] = 300
 else:
-    ITEM_PIPELINES['crawlpy.pipelines.FirebasePipeline'] = 300
+    ITEM_PIPELINES['stackflowCrawl.pipelines.FirebasePipeline'] = 300
 
 
 # Enable and configure the AutoThrottle extension (disabled by default)

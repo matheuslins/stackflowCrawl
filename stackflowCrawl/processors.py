@@ -1,5 +1,5 @@
 from six import string_types
-from crawlpy import parsers
+from stackflowCrawl import parsers
 from w3lib.html import remove_tags
 
 from .tools.api import send_to_api

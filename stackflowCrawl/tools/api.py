@@ -12,7 +12,9 @@ password = config('USER_PASSWORD', cast=str)
 
 def send_to_api(data, endpoint, method):
     if method.upper() == 'POST':
-        response = requests.post(host + endpoint,
+        requests.post(
+            host + endpoint,
             auth=(email, password),
             data=json.dumps(data),
-            headers={'Content-Type': 'application/json'})
+            headers={'Content-Type': 'application/json'}
+        )

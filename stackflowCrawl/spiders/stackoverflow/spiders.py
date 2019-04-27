@@ -1,7 +1,7 @@
 from furl import furl
 from scrapy import Spider
 
-from crawlpy.tools.wrappers import property_collection
+from stackflowCrawl.tools.wrappers import property_collection
 from .constants.consulta import START_URL
 from .steps.consulta import consult_job
 

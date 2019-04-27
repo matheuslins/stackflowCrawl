@@ -2,7 +2,6 @@
 import re
 
 from scrapy.loader.processors import Join, TakeFirst
-from crawlpy.processors import TakeLast
 
 
 _base_xpath_job = ('//div[contains(@class, "job-details--about")]/'
@@ -13,6 +12,7 @@ COMMON_SKILLS = ['docker', 'ansible', 'linux', 'python', 'django', 'c#',
                 'java', 'flask', 'c++', '.net', 'javascript', 'elixir',
                 'html', 'html5', 'css', 'css3', 'redux', 'react', 'angular',
                 'less', 'swift', 'objective-c', 'jquery', 'php', 'wordpress']
+
 
 def _clean_skills(skills):
     pattern = re.compile(
