@@ -1,2 +1,2 @@
 # stackflowCrawl
-The robot crawlers repository
+A spider that capture jobs from stack overflow
