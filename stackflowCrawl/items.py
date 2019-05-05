@@ -1,10 +1,4 @@
 # -*- coding: utf-8 -*-
-
-# Define here the models for your scraped items
-#
-# See documentation in:
-# https://doc.scrapy.org/en/latest/topics/items.html
-
 import scrapy
 from scrapy.loader.processors import Identity
 
@@ -22,27 +16,23 @@ class JobItem(scrapy.Item):
 
     # About the job
     _type = scrapy.Field()
-    industry = scrapy.Field()
-    experience_level = scrapy.Field()
+    industry = scrapy.Field(output_processor=Identity())
+    experienceLevel = scrapy.Field(output_processor=Identity())
     role = scrapy.Field()
-    company_size = scrapy.Field()
-    company_type = scrapy.Field()
+    companySize = scrapy.Field()
+    companyType = scrapy.Field()
     description = scrapy.Field()
-    link_apply = scrapy.Field()
-    joel_test = scrapy.Field(output_processor=Identity())  # list
-
-    # Tecnologies
-    tecnologies = scrapy.Field(output_processor=Identity())  # list
-
-    # Benefits
+    linkApply = scrapy.Field()
+    joelTest = scrapy.Field(output_processor=Identity())  # list
+    technologies = scrapy.Field(output_processor=Identity())  # list
     benefits = scrapy.Field(output_processor=Identity())  # list
 
 
 class CompanyItem(scrapy.Item):
     # General infos
     name = scrapy.Field()
-    company_type = scrapy.Field()
-    company_home_page = scrapy.Field()
-    open_jobs = scrapy.Field(output_processor=Identity())  # list
+    companyType = scrapy.Field()
+    companyHomePage = scrapy.Field()
+    openJobs = scrapy.Field(output_processor=Identity())  # list
     benefits = scrapy.Field(output_processor=Identity())  # list
-    technology_stack = scrapy.Field(output_processor=Identity())  # list
+    technologyStack = scrapy.Field(output_processor=Identity())  # list
