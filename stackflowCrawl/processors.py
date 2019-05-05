@@ -51,14 +51,3 @@ class TakeLast(object):
             if value is not None and value != '':
                 return value
 
-
-class HandleAPI(object):
-
-    def __init__(self, cursor):
-        self.items = self.config(cursor)
-
-    def send(self):
-        send_to_api(self.items, '/job/create/', 'post')
-
-    def config(self, cursor):
-        return [item for item in cursor]

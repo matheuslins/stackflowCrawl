@@ -3,6 +3,7 @@
 from decouple import config
 
 DEBUG = config('DEBUG', cast=bool, default=True)
+ENVIRONMENT = config('ENVIRONMENT', cast=str, default='dev')
 
 BOT_NAME = 'stackflowCrawl'
 
@@ -61,16 +62,12 @@ DOWNLOADER_MIDDLEWARES = {
 #    'scrapy.extensions.telnet.TelnetConsole': None,
 #}
 
-
 ITEM_PIPELINES = {
-    'stackflowCrawl.pipelines.BaseDBPipeline': 100,
-    'stackflowCrawl.pipelines.DuplicatesJobPipeline': 200
+    'stackflowCrawl.pipelines.DuplicatesJobPipeline': 0,
+    'stackflowCrawl.pipelines.BaseDBPipeline': 100
 }
 
-if DEBUG:
-    ITEM_PIPELINES['stackflowCrawl.pipelines.MongoDBPipeline'] = 300
-else:
-    ITEM_PIPELINES['stackflowCrawl.pipelines.FirebasePipeline'] = 300
+ITEM_PIPELINES['stackflowCrawl.pipelines.ElasticSearchPipeline'] = 300
 
 
 # Enable and configure the AutoThrottle extension (disabled by default)
@@ -94,14 +91,8 @@ else:
 #HTTPCACHE_IGNORE_HTTP_CODES = []
 #HTTPCACHE_STORAGE = 'scrapy.extensions.httpcache.FilesystemCacheStorage'
 
-
-# FireBase
-FIREBASE_DATABASE = 'https://linkehub-api.firebaseio.com/'
-FIREBASE_REF = 'stackoverflow_jobs'
-
-# MongoDB
-MONGODB_SERVER = "localhost"
-MONGODB_PORT = 27017
-MONGO_DATABASE = "jobs"
+# Elastic Search
+ES_HOST = config('ES_HOST', cast=str, default='http://localhost:9200')
+ES_INDEX = config('ES_INDEX', cast=str, default='stkflow-jobs')
 
 RETRY_HTTP_CODES = [429]

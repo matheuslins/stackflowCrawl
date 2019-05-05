@@ -27,26 +27,31 @@ def _clean_skills(skills):
     return list(set(new_list))
 
 
+def split_by_comma(item):
+    if item:
+        return item[0].split(',')
+    return item
+
+
 XPATHS_JOB = {
 
     # Jobs infos
     'title': '//h1[contains(@class, "headline1")]//a/text()',
     '_type': _base_xpath_job('Job type'),
-    'experience_level': _base_xpath_job('Experience level'),
-    'role': _base_xpath_job('Role'),
-    'industry': _base_xpath_job('Industry'),
-    'company_size': _base_xpath_job('Company size'),
-    'company_type': _base_xpath_job('Company type'),
-    'tecnologies': ('//section[contains(., "Technologies")]//div//a/text()',
-                    _clean_skills),
+    'experienceLevel': (_base_xpath_job('Experience level'), split_by_comma),
+    'role': (_base_xpath_job('Role'), split_by_comma),
+    'industry': (_base_xpath_job('Industry'), split_by_comma),
+    'companySize': _base_xpath_job('Company size'),
+    'companyType': _base_xpath_job('Company type'),
+    'technologies': ('//section[contains(., "Technologies")]//div//a/text()', _clean_skills),
 
     'description': (
         '//section[contains(., "Job description")]//p//text() | '
         '//section[contains(., "Job description")]//p//text()', Join()),
-    'joel_test': ('//section[contains(., "Joel Test")]'
+    'joelTest': ('//section[contains(., "Joel Test")]'
                   '//div[@class="mb4" and //span[conta'
                   'ins(@class, "green")]]//span/following::text()[1]'),
-    'link_apply': ('//a[contains(@class, "_apply")]/@href', TakeFirst()),
+    'linkApply': ('//a[contains(@class, "_apply")]/@href', TakeFirst()),
     'benefits': '//section[contains(@class, "benefits")]//ul//li/@title',
 
     # Company infos

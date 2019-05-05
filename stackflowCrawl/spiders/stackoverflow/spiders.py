@@ -13,8 +13,8 @@ class StackOverflowSpider(Spider):
     job = None
     allowed_domains = ['stackoverflow.com']
     custom_settings = {
-        'DOWNLOAD_DELAY': 0.8,
-        'MONGODB_PIPELINE_ENABLE': True
+        'DOWNLOAD_DELAY': 0.7,
+        'ES_PIPELINE_ENABLE': True
     }
 
     def __init__(self, city=None, distance=None, job=None, *a, **kw):

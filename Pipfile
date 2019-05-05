@@ -10,7 +10,10 @@ requests = "*"
 python-decouple = "*"
 scrapy = "*"
 furl = "*"
-pymongo = "*"
+elasticsearch-dsl = "*"
+pytz = "*"
+geopy = "*"
+geohash = "*"
 
 [requires]
 python_version = "3.7"
