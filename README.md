@@ -2,7 +2,7 @@
 A robot that capture jobs from Stack Overflow!
 
 If you're searching for a job opportunity, this robot can help you.
-I've just made a spider crawler which putting docs in a Elastic Search databas and makes possible 
+I've just made a spider crawler which putting docs in a Elastic Search database and makes possible 
 use Kibana and build dashboards like this:
 
 ![Kibana Jobs Dashboard](images/kibana-jobs-dasjboard.png)
