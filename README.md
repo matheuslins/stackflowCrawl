@@ -7,7 +7,7 @@ use Kibana and build dashboards like this:
 
 ![Kibana Jobs Dashboard](images/kibana-jobs-dasjboard.png)
 
-It's awesome because you know witch country has more jobs with a determinate technology or where eran better for certain technology.
+It's awesome because you know which country has more jobs with a determinate technology or where you earn better for certain technology.
 
 ### Requirements
 
