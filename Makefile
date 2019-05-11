@@ -62,3 +62,6 @@ install:
 
 lock:
 	pipenv lock
+
+compose:
+	docker-compose run kibana
