@@ -46,4 +46,4 @@ or kind of job
 scrapy crawl stkflow -a job="Software Engineer"
 ```
 
-Your robot is running and you can see the result here: http://0.0.0.0:5601/app/kibana
+Your robot is running and you can see the result here: http://0.0.0.0:5601/app/kibana in **Discover** tab
