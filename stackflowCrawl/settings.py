@@ -96,3 +96,6 @@ ES_HOST = config('ES_HOST', cast=str, default='http://localhost:9200')
 ES_INDEX = config('ES_INDEX', cast=str, default='stkflow-jobs')
 
 RETRY_HTTP_CODES = [429]
+
+GEOCODE_USERNAME = config('GEOCODE_USERNAME', cast=str)
+BULK_SIZE = config('BULK_SIZE', cast=int, default=100)

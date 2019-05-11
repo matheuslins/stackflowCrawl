@@ -7,6 +7,7 @@ from scrapy.exceptions import DropItem, NotConfigured
 from elasticsearch.helpers import bulk
 
 from stackflowCrawl.database import config_client
+from stackflowCrawl.settings import GEOCODE_USERNAME, BULK_SIZE
 
 
 class DuplicatesJobPipeline(object):
@@ -34,7 +35,7 @@ class DuplicatesJobPipeline(object):
 
 
 class BaseDBPipeline(object):
-    bulk_size = 10
+    bulk_size = BULK_SIZE
 
     def __init__(self, settings):
         self.bulk = []
@@ -47,7 +48,7 @@ class BaseDBPipeline(object):
 
     def open_spider(self, spider):
         self.client = config_client()
-        self.gn = geocoders.GeoNames(username='matheuslins')
+        self.gn = geocoders.GeoNames(username=GEOCODE_USERNAME)
 
 
 class ElasticSearchPipeline(BaseDBPipeline):
@@ -73,17 +74,22 @@ class ElasticSearchPipeline(BaseDBPipeline):
                     }
                 })
                 if location:
-                    gn_location = self.gn.geocode(location)
-                    if gn_location:
-                        item.update({
-                            "location": {
-                                'countryName': gn_location.raw.get('countryName', ''),
-                                'raw': str(location)
-                            }
-                        })
+                    try:
+                        gn_location = self.gn.geocode(location)
+                        if gn_location:
+                            item.update({
+                                "location": {
+                                    'countryName': gn_location.raw.get('countryName', ''),
+                                    'raw': str(location),
+                                    'lt': gn_location.latitude,
+                                    'lo': gn_location.longitude
+                                }
+                            })
+                    except Exception:
+                        pass
                 yield {
                     "_index": self.es_index,
-                    "_type": "doc",
+                    "_type": "job",
                     "_id": self.generate_id(item),
                     '_op_type': 'create',
                     '_source': item
