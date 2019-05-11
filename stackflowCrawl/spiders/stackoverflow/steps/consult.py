@@ -5,9 +5,9 @@ from scrapy.http import Request
 from urllib.parse import urljoin
 from furl import furl
 
-from .extracao import extract_job
+from .extraction import extract_job
 from ..utils import clean_url
-from ..constants.consulta import XPAHS_CONSULT
+from ..constants.consult import XPAHS_CONSULT
 
 
 def consult_job(response):
@@ -26,6 +26,7 @@ def consult_job(response):
                 yield pagination(response, has_pagination)
         else:
             print("A busca nao encontrou resultados")
+
 
 def pagination(response, h_pag):
     url_pag = h_pag.xpath('./@href')[0].extract()

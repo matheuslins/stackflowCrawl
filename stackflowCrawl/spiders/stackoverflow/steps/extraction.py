@@ -3,7 +3,7 @@
 from stackflowCrawl.loaders import JobLoader
 
 from stackflowCrawl.tools.text import extract_job_id
-from ..constants.extracao import XPATHS_JOB
+from ..constants.extraction import XPATHS_JOB
 
 
 def extract_job(response):
