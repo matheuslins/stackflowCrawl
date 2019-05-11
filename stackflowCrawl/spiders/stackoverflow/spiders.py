@@ -2,8 +2,8 @@ from furl import furl
 from scrapy import Spider
 
 from stackflowCrawl.tools.wrappers import property_collection
-from .constants.consulta import START_URL
-from .steps.consulta import consult_job
+from .constants.consult import START_URL
+from .steps.consult import consult_job
 
 
 class StackOverflowSpider(Spider):
