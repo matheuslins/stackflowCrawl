@@ -22,7 +22,7 @@ It's awesome because you know which country has more jobs with a determinate tec
  BULK_SIZE=how_many_docs_sent_to_elasticsearch # default: 10
 ````
 
-**Location**: If you want fill geolocation fields, set GEOCODE_USERNAME as https://github.com/geopy/geopy indicate.
+**Location**: If you want to fill geolocation fields, set GEOCODE_USERNAME how to https://github.com/geopy/geopy indicate.
 
 ### Pre Run
 
@@ -46,4 +46,4 @@ or kind of job
 scrapy crawl stkflow -a job="Software Engineer"
 ```
 
-Your robot is running and you can see the result here: ```http://0.0.0.0:5601/app/kibana```
+Your robot is running and you can see the result here: http://0.0.0.0:5601/app/kibana
