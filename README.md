@@ -15,7 +15,7 @@ It's awesome because you know which country has more jobs with a determinate tec
 - Docker Compose
 - Pip
 
-### Enviroment vars
+### Environment vars
 
 ````.env
  GEOCODE_USERNAME=your_user_agent # not required
