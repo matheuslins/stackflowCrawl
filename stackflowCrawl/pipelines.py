@@ -1,4 +1,5 @@
 import pytz
+import hashlib
 from datetime import datetime
 
 from scrapy.exceptions import DropItem, NotConfigured
@@ -55,12 +56,18 @@ class ElasticSearchPipeline(BaseDBPipeline):
             raise NotConfigured
         super(ElasticSearchPipeline, self).__init__(settings, *args, **kwargs)
 
+    @staticmethod
+    def generate_id(item):
+        return hashlib.sha1(
+            f"{item['url']}_{item['job_id']}".encode()
+        ).hexdigest()[:20]
+
     def insert_items(self):
         for item in self.bulk:
             yield {
                 "_index": self.es_index,
                 "_type": "job",
-                "_id": f"{item['url']}_{item['job_id']}",
+                "_id": self.generate_id(item),
                 '_op_type': 'create',
                 '_source': item
             }
