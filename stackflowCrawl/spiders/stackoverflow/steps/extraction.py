@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 from stackflowCrawl.loaders import JobLoader
 
 from stackflowCrawl.tools.text import extract_job_id

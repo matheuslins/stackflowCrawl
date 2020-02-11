@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 
 XPAHS_CONSULT = {
     'jobs_urls': '//div[contains(@class, "listResults")]//div[contains(@data-jobid, "")]//h2//a/@href',

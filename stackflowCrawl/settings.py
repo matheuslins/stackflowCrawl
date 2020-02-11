@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 from decouple import config
 
 DEBUG = config('DEBUG', cast=bool, default=True)
