@@ -55,22 +55,15 @@ class ElasticSearchPipeline(BaseDBPipeline):
             raise NotConfigured
         super(ElasticSearchPipeline, self).__init__(settings, *args, **kwargs)
 
-    @staticmethod
-    def generate_id(item):
-        return f"{item['url']}_{item['job_id']}"
-
-    def process_bulk_item(self, items):
-        def insert_items():
-            for item in items:
-                yield {
-                    "_index": self.es_index,
-                    "_type": "job",
-                    "_id": self.generate_id(item),
-                    '_op_type': 'create',
-                    '_source': item
-                }
-
-        bulk(self.client, insert_items())
+    def insert_items(self):
+        for item in self.bulk:
+            yield {
+                "_index": self.es_index,
+                "_type": "job",
+                "_id": f"{item['url']}_{item['job_id']}",
+                '_op_type': 'create',
+                '_source': item
+            }
 
     def process_item(self, item, spider):
         dict_item = dict(item)
@@ -80,11 +73,11 @@ class ElasticSearchPipeline(BaseDBPipeline):
         })
         self.bulk.append(dict_item)
         if len(self.bulk) >= self.bulk_size:
-            self.process_bulk_item(self.bulk)
+            bulk(self.client, self.insert_items())
             self.bulk = []
         return item
     
     def close_spider(self, spider):
         if len(self.bulk) < self.bulk_size:
-            self.process_bulk_item(self.bulk)
+            bulk(self.client, self.insert_items())
             self.bulk = []
