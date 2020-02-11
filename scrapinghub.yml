@@ -1,1 +1,4 @@
 project: 429783
+
+requirements:
+  file: Pipfile

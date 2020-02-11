@@ -1,13 +1,12 @@
 import pytz
 import hashlib
 from datetime import datetime
-from geopy import geocoders
 
 from scrapy.exceptions import DropItem, NotConfigured
 from elasticsearch.helpers import bulk
 
 from stackflowCrawl.database import config_client
-from stackflowCrawl.settings import GEOCODE_USERNAME, BULK_SIZE
+from stackflowCrawl.settings import BULK_SIZE
 
 
 class DuplicatesJobPipeline(object):
@@ -48,7 +47,6 @@ class BaseDBPipeline(object):
 
     def open_spider(self, spider):
         self.client = config_client()
-        self.gn = geocoders.GeoNames(username=GEOCODE_USERNAME)
 
 
 class ElasticSearchPipeline(BaseDBPipeline):
