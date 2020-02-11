@@ -2,3 +2,5 @@ project: 429783
 
 requirements:
   file: requirements.txt
+
+stack: scrapy:1.8-py3
