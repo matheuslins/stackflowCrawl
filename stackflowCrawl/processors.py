@@ -1,8 +1,7 @@
+from pytz import unicode
 from six import string_types
 from stackflowCrawl import parsers
 from w3lib.html import remove_tags
-
-from .tools.api import send_to_api
 
 
 class DefaultInputProcessor(object):

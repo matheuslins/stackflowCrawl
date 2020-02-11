@@ -30,7 +30,7 @@ class StackOverflowSpider(Spider):
         super(StackOverflowSpider, self).__init__(*a, **kw)
 
     def get_distance(self):
-        return '20' if self.distance is None else self.distance
+        return self.distance or '20'
     
     @property_collection
     def get_job(self):

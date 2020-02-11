@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from scrapy.loader import ItemLoader
-from scrapy.loader.processors import Identity, Join
+from scrapy.loader.processors import Join
 from stackflowCrawl import processors
 from stackflowCrawl.items import JobItem
 

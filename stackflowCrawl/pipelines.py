@@ -67,26 +67,6 @@ class ElasticSearchPipeline(BaseDBPipeline):
     def process_bulk_item(self, items):
         def insert_items():
             for item in items:
-                location = item.get('location', '')
-                item.update({
-                    "location": {
-                        'raw': str(location)
-                    }
-                })
-                if location:
-                    try:
-                        gn_location = self.gn.geocode(location)
-                        if gn_location:
-                            item.update({
-                                "location": {
-                                    'countryName': gn_location.raw.get('countryName', ''),
-                                    'raw': str(location),
-                                    'lt': gn_location.latitude,
-                                    'lo': gn_location.longitude
-                                }
-                            })
-                    except Exception:
-                        pass
                 yield {
                     "_index": self.es_index,
                     "_type": "job",
@@ -94,12 +74,14 @@ class ElasticSearchPipeline(BaseDBPipeline):
                     '_op_type': 'create',
                     '_source': item
                 }
+
         bulk(self.client, insert_items())
 
     def process_item(self, item, spider):
         dict_item = dict(item)
         dict_item.update({
-            "dateTime": datetime.now(tz=self.tz).isoformat()
+            "dateTime": datetime.now(tz=self.tz).isoformat(),
+            "location": dict_item['location'].replace('– ', "")
         })
         self.bulk.append(dict_item)
         if len(self.bulk) >= self.bulk_size:
@@ -110,3 +92,4 @@ class ElasticSearchPipeline(BaseDBPipeline):
     def close_spider(self, spider):
         if len(self.bulk) < self.bulk_size:
             self.process_bulk_item(self.bulk)
+            self.bulk = []
