@@ -12,8 +12,6 @@ scrapy = "*"
 furl = "*"
 elasticsearch-dsl = "*"
 pytz = "*"
-geopy = "*"
-geohash = "*"
 
 [requires]
 python_version = "3.7"
