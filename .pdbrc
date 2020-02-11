@@ -1,0 +1,5 @@
+import os
+
+alias killme os.system('kill -9 %d' % os.getpid())
+alias dump with open('dump.html', 'wb') as f: f.write(%1)
+alias dumpbody with open('dump.html', 'wb') as f: f.write(%1.body)

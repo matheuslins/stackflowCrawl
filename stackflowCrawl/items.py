@@ -20,6 +20,7 @@ class JobItem(scrapy.Item):
     role = scrapy.Field()
     companySize = scrapy.Field()
     companyType = scrapy.Field()
+    companyLogo = scrapy.Field()
     description = scrapy.Field()
     linkApply = scrapy.Field()
     joelTest = scrapy.Field(output_processor=Identity())  # list
