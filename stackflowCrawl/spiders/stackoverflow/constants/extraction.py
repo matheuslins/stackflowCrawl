@@ -57,9 +57,8 @@ XPATHS_JOB = {
     # Company infos
     'company': ('//h1[contains(@class, "headline1")]/'
                 'following-sibling::div[1]//a//text()'),
-    'location': ('//h1[contains(@class, "headline1")]/'
-                 'following::span[contains(@class, "fc-black-500")]'
-                 '//span/following::text()[1]', TakeFirst()),
+    'location': (
+        'normalize-space(.//span[contains(@class, "fc-black-500")]/text())', TakeFirst()),
     'salary': '//header//span[contains(@class, "-salary")]/text()',
     'sponsor': ('//span[contains(@class, "-visa")]/text()', TakeFirst()),
     'paid': ('//span[contains(@class, "-relocation")]/text()', TakeFirst())
