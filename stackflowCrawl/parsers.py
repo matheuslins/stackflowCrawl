@@ -1,5 +1,6 @@
 import re
 
+
 _re_nonspaces = re.compile(u'[^\s]+|\n', flags=re.UNICODE)
 _re_norm_CR = re.compile(u'(?:\s*\n\s*)+', flags=re.UNICODE)
 
