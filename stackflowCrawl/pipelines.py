@@ -60,7 +60,7 @@ class ElasticSearchPipeline(BaseDBPipeline):
     def generate_id(item):
         return hashlib.sha1(
             f"{item['url']}_{item['job_id']}".encode()
-        ).hexdigest()[:20]
+        ).hexdigest()[:40]
 
     def insert_items(self):
         for item in self.bulk:
