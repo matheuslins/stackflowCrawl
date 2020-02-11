@@ -1,7 +1,12 @@
 from decouple import config
+from scrapy.utils.project import get_project_settings
 
-DEBUG = config('DEBUG', cast=bool, default=True)
-ENVIRONMENT = config('ENVIRONMENT', cast=str, default='dev')
+
+settings = get_project_settings()
+
+
+DEBUG = config('DEBUG', cast=bool, default=settings.get('DEBUG'))
+ENVIRONMENT = config('ENVIRONMENT', cast=str, default=settings.get('ENVIRONMENT'))
 
 BOT_NAME = 'stackflowCrawl'
 
@@ -90,13 +95,12 @@ ITEM_PIPELINES['stackflowCrawl.pipelines.ElasticSearchPipeline'] = 300
 #HTTPCACHE_STORAGE = 'scrapy.extensions.httpcache.FilesystemCacheStorage'
 
 # Elastic Search
-ES_HOST = config('ES_HOST', cast=str, default='http://localhost:9200')
+ES_HOST = config('ES_HOST', cast=str, default=settings.get('ES_HOST'))
 ES_INDEX = config('ES_INDEX', cast=str, default='stkflow-jobs')
 
-ES_CLUSTER_USER = config('ES_CLUSTER_USER', cast=str)
-ES_CLUSTER_PASS = config('ES_CLUSTER_PASS', cast=str)
+ES_CLUSTER_USER = config('ES_CLUSTER_USER', cast=str, default=settings.get('ES_CLUSTER_USER'))
+ES_CLUSTER_PASS = config('ES_CLUSTER_PASS', cast=str, default=settings.get('ES_CLUSTER_PASS'))
 
 RETRY_HTTP_CODES = [429]
 
-GEOCODE_USERNAME = config('GEOCODE_USERNAME', cast=str)
 BULK_SIZE = config('BULK_SIZE', cast=int, default=100)
