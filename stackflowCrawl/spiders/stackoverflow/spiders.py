@@ -13,7 +13,7 @@ class StackOverflowSpider(Spider):
     job = None
     allowed_domains = ['stackoverflow.com']
     custom_settings = {
-        'DOWNLOAD_DELAY': 0.7,
+        'DOWNLOAD_DELAY': 0.5,
         'ES_PIPELINE_ENABLE': True
     }
 
