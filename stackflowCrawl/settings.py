@@ -95,6 +95,9 @@ ITEM_PIPELINES['stackflowCrawl.pipelines.ElasticSearchPipeline'] = 300
 ES_HOST = config('ES_HOST', cast=str, default='http://localhost:9200')
 ES_INDEX = config('ES_INDEX', cast=str, default='stkflow-jobs')
 
+ES_CLUSTER_USER = config('ES_CLUSTER_USER', cast=str)
+ES_CLUSTER_PASS = config('ES_CLUSTER_PASS', cast=str)
+
 RETRY_HTTP_CODES = [429]
 
 GEOCODE_USERNAME = config('GEOCODE_USERNAME', cast=str)

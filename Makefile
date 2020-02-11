@@ -34,29 +34,6 @@ coverage.html:
 pep8:
 	@pep8 --filename="*.py" --ignore=W --first --show-source --statistics --count
 
-spider:
-	@echo "Criando spider:" $(NAME) "....."
-	@echo "Criando diretorio principal"
-	@mkdir ./stackflowCrawl/stackflowCrawl/spiders/$(NAME)
-	@cd ./stackflowCrawl/stackflowCrawl/spiders/$(NAME) &&\
-	mkdir ./constants &&\
-	mkdir ./steps &&\
-	echo "# spider-arguments.yml\n---" > spider-arguments.yml &&\
-	echo "# coverage.py\n---\n" > coverage.py &&\
-	echo "# -*- coding: utf-8 -*-\n" > __init__.py &&\
-	echo "# -*- coding: utf-8 -*-\n" > spiders.py &&\
-	echo "\"\"\"\n\nSpider:"$(NAME)"\n\n\"\"\"" >> spiders.py &&\
-	echo "# -*- coding: utf-8 -*-\n" > ./utils.py &&\
-	echo "Criando a estrutura de constantes......" &&\
-	echo "# -*- coding: utf-8 -*-\n" > ./constants/__init__.py &&\
-	echo "# -*- coding: utf-8 -*-\n" > ./constants/consulta.py &&\
-	echo "# -*- coding: utf-8 -*-\n" > ./constants/extracao.py &&\
-	echo "Criando a estrutura de steps......" &&\
-	echo "# -*- coding: utf-8 -*-\n" > ./steps/__init__.py &&\
-	echo "# -*- coding: utf-8 -*-\n" > ./steps/consulta.py &&\
-	echo "# -*- coding: utf-8 -*-\n" > ./steps/extracao.py
-	@echo "Spider criada!"
-
 install:
 	pipenv install
 
