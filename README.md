@@ -2,12 +2,12 @@
 A robot that capture jobs from Stack Overflow!
 
 If you're searching for a job opportunity, this robot can help you.
-I've just made a spider crawler where put docs in a Elastic Search, what makes possible 
+I've just made a spider crawler which putting docs in a ElasticSearch database and makes possible 
 use Kibana and build dashboards like this:
 
 ![Kibana Jobs Dashboard](images/kibana-jobs-dasjboard.png)
 
-It's awesome because you know witch country has more jobs with a determinate technology or where eran better for certain technology.
+It's awesome because you know which country has more jobs with a determinate technology or where you earn better for certain technology.
 
 ### Requirements
 
@@ -15,14 +15,14 @@ It's awesome because you know witch country has more jobs with a determinate tec
 - Docker Compose
 - Pip
 
-### Enviroment vars
+### Environment vars
 
 ````.env
  GEOCODE_USERNAME=your_user_agent # not required
  BULK_SIZE=how_many_docs_sent_to_elasticsearch # default: 10
 ````
 
-**Location**: If you want fill geolocation fields, set GEOCODE_USERNAME as https://github.com/geopy/geopy indicate.
+**Location**: If you want to fill geolocation fields, set GEOCODE_USERNAME how to https://github.com/geopy/geopy indicate.
 
 ### Pre Run
 
@@ -46,4 +46,4 @@ or kind of job
 scrapy crawl stkflow -a job="Software Engineer"
 ```
 
-Your robot is running and you can see the result here: ```http://0.0.0.0:5601/app/kibana```
+Your robot is running and you can see the result here: http://0.0.0.0:5601/app/kibana in **Discover** tab
