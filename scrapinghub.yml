@@ -1,4 +1,4 @@
 project: 429783
 
 requirements:
-  file: Pipfile
+  file: requirements.txt
