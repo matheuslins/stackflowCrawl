@@ -7,23 +7,11 @@ _base_xpath_job = ('//div[contains(@class, "job-details--about")]/'
                    '/div[@class="mb8"]//span[preceding-sibling::span['
                    'contains(., "{}")]]/text()').format
 
-COMMON_SKILLS = ['docker', 'ansible', 'linux', 'python', 'django', 'c#',
-                'java', 'flask', 'c++', '.net', 'javascript', 'elixir',
-                'html', 'html5', 'css', 'css3', 'redux', 'react', 'angular',
-                'less', 'swift', 'objective-c', 'jquery', 'php', 'wordpress']
-
 
 def _clean_skills(skills):
-    pattern = re.compile(
-        r'(iphone|http|https|http:\/\/.*|https:\/\/.*|www|\.com|\.com\..*|@)')
-    new_list = []
-    for element in skills:
-        if not re.findall(pattern, element):
-            for skill in COMMON_SKILLS:
-                if skill in element:
-                    element = skill
-            new_list.append(element)
-    return list(set(new_list))
+    pattern = re.compile(r'(iphone|http|https|http:\/\/.*|https:\/\/.*|www|\.com|\.com\..*|@)')
+    skills = [element for element in skills if not re.findall(pattern, element)]
+    return list(set(skills))
 
 
 def split_by_comma(item):
@@ -50,12 +38,14 @@ XPATHS_JOB = {
     'joelTest': ('//section[contains(., "Joel Test")]'
                   '//div[@class="mb4" and //span[conta'
                   'ins(@class, "green")]]//span/following::text()[1]'),
-    'linkApply': ('//a[contains(@class, "_apply")]/@href', TakeFirst()),
+    'linkApply': '//div[contains(@class, "job-details--display-contents")]/a/@href',
     'benefits': '//section[contains(@class, "benefits")]//ul//li/@title',
 
     # Company infos
     'company': ('//h1[contains(@class, "headline1")]/'
                 'following-sibling::div[1]//a//text()'),
+
+    'companyLogo': '//img[contains(@class, "s-avatar__lg")]/@src',
     'location': (
         'normalize-space(.//span[contains(@class, "fc-black-500")]/text())', TakeFirst()),
     'salary': '//header//span[contains(@class, "-salary")]/text()',
