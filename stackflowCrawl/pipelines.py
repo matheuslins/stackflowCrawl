@@ -35,6 +35,7 @@ class DuplicatesJobPipeline(object):
 
 class BaseDBPipeline(object):
     bulk_size = BULK_SIZE
+    client = None
 
     def __init__(self, settings):
         self.bulk = []
@@ -45,9 +46,6 @@ class BaseDBPipeline(object):
     def from_crawler(cls, crawler):
         return cls(crawler.settings)
 
-    def open_spider(self, spider):
-        self.client = config_client()
-
 
 class ElasticSearchPipeline(BaseDBPipeline):
     
@@ -56,16 +54,20 @@ class ElasticSearchPipeline(BaseDBPipeline):
             raise NotConfigured
         super(ElasticSearchPipeline, self).__init__(settings, *args, **kwargs)
 
+    def open_spider(self, spider):
+        self.client = config_client()
+
     @staticmethod
     def generate_id(item):
         return hashlib.sha1(
-            f"{item['url']}_{item['job_id']}".encode()
+            f"{item['url']}_{item['jobId']}".encode()
         ).hexdigest()[:40]
 
     def insert_items(self):
+        date_timezone = datetime.now(tz=self.tz).date()
         for item in self.bulk:
             yield {
-                "_index": self.es_index,
+                "_index": f"{self.es_index}-{date_timezone}",
                 "_type": "job",
                 "_id": self.generate_id(item),
                 '_op_type': 'create',

@@ -95,11 +95,11 @@ ITEM_PIPELINES['stackflowCrawl.pipelines.ElasticSearchPipeline'] = 300
 #HTTPCACHE_STORAGE = 'scrapy.extensions.httpcache.FilesystemCacheStorage'
 
 # Elastic Search
-ES_HOST = config('ES_HOST', cast=str, default='https://8a7b0b59fcde4d50ae94d5027ffbaba0.us-east-1.aws.found.io:9243')
-ES_INDEX = config('ES_INDEX', cast=str, default='stkflow-jobs')
+ES_HOST = config('ES_HOST', default='https://8a7b0b59fcde4d50ae94d5027ffbaba0.us-east-1.aws.found.io:9243')
+ES_INDEX = config('ES_INDEX', default='stkflow-jobs')
 
-ES_CLUSTER_USER = config('ES_CLUSTER_USER', cast=str, default='elastic')
-ES_CLUSTER_PASS = config('ES_CLUSTER_PASS', cast=str, default='wL7S8rUNIRh2bXKQ5lvy53Pr')
+ES_CLUSTER_USER = config('ES_CLUSTER_USER')
+ES_CLUSTER_PASS = config('ES_CLUSTER_PASS')
 
 RETRY_HTTP_CODES = [429]
 

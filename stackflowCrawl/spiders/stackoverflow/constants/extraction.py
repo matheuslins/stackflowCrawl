@@ -1,11 +1,15 @@
 import re
 
 from scrapy.loader.processors import Join, TakeFirst
+from stackflowCrawl.parsers import convert_to_int
 
 
 _base_xpath_job = ('//div[contains(@class, "job-details--about")]/'
                    '/div[@class="mb8"]//span[preceding-sibling::span['
                    'contains(., "{}")]]/text()').format
+
+_react_job_base_xpath = ("//span[contains(text(), 'React to this job')]"
+                         "/following-sibling::span[@title='{}']//span//text()").format
 
 
 def _clean_skills(skills):
@@ -24,7 +28,7 @@ XPATHS_JOB = {
 
     # Jobs infos
     'title': '//h1[contains(@class, "headline1")]//a/text()',
-    '_type': _base_xpath_job('Job type'),
+    'jobType': _base_xpath_job('Job type'),
     'experienceLevel': (_base_xpath_job('Experience level'), split_by_comma),
     'role': (_base_xpath_job('Role'), split_by_comma),
     'industry': (_base_xpath_job('Industry'), split_by_comma),
@@ -32,9 +36,11 @@ XPATHS_JOB = {
     'companyType': _base_xpath_job('Company type'),
     'technologies': ('//section[contains(., "Technologies")]//div//a/text()', _clean_skills),
 
-    'description': (
-        '//section[contains(., "Job description")]//p//text() | '
-        '//section[contains(., "Job description")]//p//text()', Join()),
+    'description': ('//section[@class="mb32 fs-body2 fc-medium pr48"]', Join()),
+    'jobLike': (_react_job_base_xpath('Like'), convert_to_int),
+    'jobDislike': (_react_job_base_xpath('Dislike'), convert_to_int),
+    'jobLove': (_react_job_base_xpath('Love'), convert_to_int),
+    'aboutCompany': ("//section[@class='-about-company mb32']/div[@class='description']/p/text()", Join()),
     'joelTest': ('//section[contains(., "Joel Test")]'
                   '//div[@class="mb4" and //span[conta'
                   'ins(@class, "green")]]//span/following::text()[1]'),
